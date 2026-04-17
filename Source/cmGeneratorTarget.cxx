@@ -2810,6 +2810,18 @@ void cmGeneratorTarget::AddRustTargetFlags(std::string& flags) const
   }
 }
 
+void cmGeneratorTarget::AddSwiftTargetFlags(std::string& flags) const
+{
+  if (cmValue version = GetProperty("Swift_LANGUAGE_VERSION")) {
+    if (cmSystemTools::VersionCompare(
+          cmSystemTools::OP_GREATER_EQUAL,
+          this->Makefile->GetDefinition("CMAKE_Swift_COMPILER_VERSION"),
+          "4.2")) {
+      flags += " -swift-version " + *version;
+    }
+  }
+}
+
 void cmGeneratorTarget::AddCUDAToolkitFlags(std::string& flags) const
 {
   std::string const& compiler =
